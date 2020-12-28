@@ -1,0 +1,70 @@
+#Two numbers in a list that add together to make another number which the user inputs.
+
+
+import os
+import time
+
+numbers = []
+
+
+def brute_force_method(numbers, find):
+  #cycles through each number in numbers
+  solved = False
+  cycles = 0
+  for number in numbers:
+    for i in range(0, len(numbers)):
+      if number + numbers[i] == find:
+        print(("{} and {}").format(number, numbers[i]))
+        solved = True
+        break
+      cycles += 1
+  if solved == False:
+    print("No numbers worked")
+  print("Cycles:", cycles, "\n\n")
+
+
+def googles_method(numbers, find):
+  numbers = sorted(numbers)
+  solved = False
+  lowest_index = 0
+  highest_index = len(numbers) - 1
+  cycles = 0
+  while solved == False:
+    if numbers[lowest_index] + numbers[highest_index] == find:
+      solved = True
+    elif numbers[lowest_index] == numbers[highest_index]:
+      print("There is no possible combination here. ")
+      break
+    elif numbers[lowest_index] + numbers[highest_index] < find:
+      cycles += 1
+      print(("{} and {} are too low. I am adding 1 to the lowest index. ").format(numbers[lowest_index], numbers[highest_index]))
+      lowest_index += 1
+    elif numbers[lowest_index] + numbers[highest_index] > find:
+      print(("{} and {} are too high. I am subtracting 1 to the highest index. ").format(numbers[lowest_index], numbers[highest_index]))
+      cycles += 1
+      highest_index -= 1
+  if solved == True:
+    print(("There is a possible combination. It is {} and {}").format(numbers[lowest_index], numbers[highest_index]))
+  print("Cycles:", cycles)
+
+
+
+print("Create a list of numbers. Then input another seperate number. This program will find the two numbers, if possible, from your list that add together to make the third number. For example:\nnumber from list + number from list = your other inputed number\n\n")
+
+
+while True:
+  try:
+    print(*numbers)
+    numbers.append(int(input("What number would you like to add to the list? \n")))
+    os.system("clear")
+  except ValueError:
+    break
+
+find_number = int(input("What number would you like to find?"))
+os.system("clear")
+
+print("The number that you want to find is: {}".format(find_number))
+
+
+brute_force_method(numbers, find_number)
+googles_method(numbers, find_number)
